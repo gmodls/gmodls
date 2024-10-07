@@ -1,2 +1,7 @@
+# IDE
+.idea
+.vs
+.vscode
+
 # Rust
-out
+target

@@ -1,5 +1,8 @@
 [package]
-name = "gmodls-core"
+name = "gmodls-analyzer"
 version = "0.1.0"
 edition = "2021"
 authors = ["jackkdev"]
+
+[dependencies]
+thiserror = "1.0.64"
