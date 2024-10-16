@@ -1,0 +1,9 @@
+[package]
+name = "gmodls-analyzer"
+version = "0.1.0"
+edition = "2021"
+authors = ["jackkdev"]
+
+[dependencies]
+serde = { version = "1.0.210", features = ["derive"] }
+thiserror = "1.0.64"

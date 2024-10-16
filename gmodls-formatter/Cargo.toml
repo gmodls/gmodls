@@ -1,8 +1,5 @@
 [package]
-name = "gmodls-analyzer"
+name = "gmodls-formatter"
 version = "0.1.0"
 edition = "2021"
 authors = ["jackkdev"]
-
-[dependencies]
-thiserror = "1.0.64"
