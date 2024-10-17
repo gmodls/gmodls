@@ -1,6 +1,6 @@
 use crate::span::Span;
 use std::cell::RefCell;
-use std::ops::{Deref, DerefMut};
+use std::ops::Deref;
 use std::rc::Rc;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -30,7 +30,7 @@ impl<T> Node<T> {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-struct NodeState {
+pub struct NodeState {
     leading_comments: Vec<Comment>,
     trailing_comments: Vec<Comment>,
     inner_comments: Vec<Comment>,
@@ -318,7 +318,7 @@ pub struct FunctionName {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FunctionBody {
-    pub parameters: NodeRef<ParameterList>,
+    pub parameters: Option<NodeRef<ParameterList>>,
     pub block: NodeRef<Block>,
 }
 
