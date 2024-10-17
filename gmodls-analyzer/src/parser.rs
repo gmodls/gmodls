@@ -426,7 +426,7 @@ impl<'source> Parser<'source> {
         let mut variables = vec![];
 
         let start = self.lex.current_span().start();
-        let mut end = start;
+        let mut end;
 
         loop {
             let expr = self.parse_expression_primary()?;
@@ -597,13 +597,16 @@ impl<'source> Parser<'source> {
         let start = self.lex.current_span().start();
 
         self.check(|t| *t == Token::LeftParen)?; // (
-        match self.lex.current_token() {
+
+        // check ) preemptively to account for empty namelists
+        let parameters = match self.lex.current_token() {
             Token::RightParen => None,
+
             _ => {
-                let parameters = self.parse_parameter_list()?; // <params>[,variadic]
-                Some(parameters)
+                Some(self.parse_parameter_list()?)
             }
-        }
+        };
+
         self.check(|t| *t == Token::RightParen)?; // )
         let block = self.parse_block()?; // <contents>
         let end = self.lex.current_span().start();
@@ -936,6 +939,7 @@ impl<'source> Parser<'source> {
         let span = self.lex.current_span();
         let variadic = match self.lex.current_token() {
             Token::Dots => {
+                self.lex.next()?;
                 end = span.end();
                 Some(NodeRef::new(Variadic, span))
             }
@@ -974,22 +978,8 @@ mod tests {
     fn parse_expressions() -> ParserResult<()> {
         let src = src!(
             br#"
-local M = despawn.points
-
-function M.Init()
-  M._ready = M.persistence.Init()
-    :Next(function()
-      M.Log("debug", "Initialized persistence module.")
-    end, function(err)
-      M.Log("debug", "Failed to initialze persistence module: %s", tostring(err))
-    end)
-end
-hook.Add("Initialize", "despawn.points.Initialize", M.Init)
-concommand.Add("dp_init", M.Init)
-
-function M.PlayerSpawn(ply)
-end
-hook.Add("PlayerSpawn", "despawn.points.PlayerSpawn", M.PlayerSpawn)
+print()
+print(123)
         "#
         );
         let lex = Lex::new(&src);
